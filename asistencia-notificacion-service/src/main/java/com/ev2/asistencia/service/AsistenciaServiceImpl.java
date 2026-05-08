@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.ev2.asistencia.dto.AsistenciaRequestDTO;
 import com.ev2.asistencia.dto.AsistenciaResponseDTO;
+import com.ev2.asistencia.event.AsistenciaRegistradaEvent;
+import com.ev2.asistencia.kafka.KafkaProducerService;
 import com.ev2.asistencia.model.Asistencia;
 import com.ev2.asistencia.repository.AsistenciaRepository;
 
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class AsistenciaServiceImpl implements AsistenciaService {
 
     private final AsistenciaRepository asistenciaRepository;
+    private final KafkaProducerService kafkaProducerService;
 
     @Override
     public AsistenciaResponseDTO guardar(AsistenciaRequestDTO asistenciaRequestDTO) {
@@ -29,15 +32,23 @@ public class AsistenciaServiceImpl implements AsistenciaService {
 
         Asistencia asistenciaGuardada = asistenciaRepository.save(asistencia);
 
+        AsistenciaRegistradaEvent event = new AsistenciaRegistradaEvent(
+                asistenciaGuardada.getId(),
+                asistenciaGuardada.getEstudianteId(),
+                asistenciaGuardada.getFechaHora(),
+                asistenciaGuardada.getEstado().name()
+        );
+
+        kafkaProducerService.enviarAsistenciaRegistrada(event);
+
         return convertirADTO(asistenciaGuardada);
     }
 
     @Override
     public List<AsistenciaResponseDTO> listarPorEstudiante(Long estudianteId) {
 
-        List<Asistencia> asistencias = asistenciaRepository.findByEstudianteId(estudianteId);
-
-        return asistencias.stream()
+        return asistenciaRepository.findByEstudianteId(estudianteId)
+                .stream()
                 .map(this::convertirADTO)
                 .toList();
     }
