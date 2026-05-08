@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+
+  # Base de datos PostgreSQL para academico-service
+  postgres-academico:
+    image: postgres:16
+
+    container_name: postgres-academico
+
+    environment:
+      POSTGRES_DB: academico_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_academico_data:/var/lib/postgresql/data
+
+  # Cliente visual para administrar PostgreSQL
+  pgadmin:
+    image: dpage/pgadmin4
+
+    container_name: pgadmin
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+
+    ports:
+      - "5050:80"
+
+    depends_on:
+      - postgres-academico
+
+volumes:
+
+  # Volumen persistente PostgreSQL
+  postgres_academico_data:
