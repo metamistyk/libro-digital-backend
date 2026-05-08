@@ -19,6 +19,23 @@ services:
     volumes:
       - postgres_academico_data:/var/lib/postgresql/data
 
+  # Base de datos PostgreSQL para usuarios-service
+  postgres-usuarios:
+    image: postgres:16
+
+    container_name: postgres-usuarios
+
+    environment:
+      POSTGRES_DB: usuarios_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5434:5432"
+
+    volumes:
+      - postgres_usuarios_data:/var/lib/postgresql/data
+
   # Cliente visual para administrar PostgreSQL
   pgadmin:
     image: dpage/pgadmin4
@@ -34,8 +51,12 @@ services:
 
     depends_on:
       - postgres-academico
+      - postgres-usuarios
 
 volumes:
 
-  # Volumen persistente PostgreSQL
+  # Persistencia PostgreSQL academico-service
   postgres_academico_data:
+
+  # Persistencia PostgreSQL usuarios-service
+  postgres_usuarios_data:
