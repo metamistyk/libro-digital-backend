@@ -1,6 +1,7 @@
 package com.ev2.asistencia.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,16 @@ public class AsistenciaServiceImpl implements AsistenciaService {
         Asistencia asistenciaGuardada = asistenciaRepository.save(asistencia);
 
         return convertirADTO(asistenciaGuardada);
+    }
+
+    @Override
+    public List<AsistenciaResponseDTO> listarPorEstudiante(Long estudianteId) {
+
+        List<Asistencia> asistencias = asistenciaRepository.findByEstudianteId(estudianteId);
+
+        return asistencias.stream()
+                .map(this::convertirADTO)
+                .toList();
     }
 
     private AsistenciaResponseDTO convertirADTO(Asistencia asistencia) {
