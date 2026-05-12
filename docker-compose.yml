@@ -3,71 +3,96 @@ services:
   # Base de datos PostgreSQL para academico-service
   postgres-academico:
     image: postgres:16
-
     container_name: postgres-academico
-
     environment:
       POSTGRES_DB: academico_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-
     ports:
       - "5433:5432"
-
     volumes:
       - postgres_academico_data:/var/lib/postgresql/data
 
   # Base de datos PostgreSQL para usuarios-service
   postgres-usuarios:
     image: postgres:16
-
     container_name: postgres-usuarios
-
     environment:
       POSTGRES_DB: usuarios_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-
     ports:
       - "5434:5432"
-
     volumes:
       - postgres_usuarios_data:/var/lib/postgresql/data
 
   # Base de datos PostgreSQL para asistencia-notificacion-service
   postgres-asistencia:
     image: postgres:16
-
     container_name: postgres-asistencia
-
     environment:
       POSTGRES_DB: asistencia_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-
     ports:
       - "5435:5432"
-
     volumes:
       - postgres_asistencia_data:/var/lib/postgresql/data
 
   # Cliente visual para administrar PostgreSQL
   pgadmin:
     image: dpage/pgadmin4
-
     container_name: pgadmin
-
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
-
     ports:
       - "5050:80"
-
     depends_on:
       - postgres-academico
       - postgres-usuarios
       - postgres-asistencia
+
+  # Zookeeper requerido por Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  # Broker Kafka para comunicación entre microservicios
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+      # Listener interno para contenedores y externo para aplicaciones locales
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  # Interfaz visual para revisar topics, mensajes y consumidores de Kafka
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    container_name: kafdrop
+    depends_on:
+      - kafka
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
 
 volumes:
 
