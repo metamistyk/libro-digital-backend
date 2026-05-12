@@ -36,8 +36,7 @@ public class AsistenciaServiceImpl implements AsistenciaService {
                 asistenciaGuardada.getId(),
                 asistenciaGuardada.getEstudianteId(),
                 asistenciaGuardada.getFechaHora(),
-                asistenciaGuardada.getEstado().name()
-        );
+                asistenciaGuardada.getEstado().name());
 
         kafkaProducerService.enviarAsistenciaRegistrada(event);
 

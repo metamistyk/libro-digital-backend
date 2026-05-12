@@ -5,16 +5,17 @@ import org.springframework.stereotype.Service;
 
 import com.ev2.asistencia.event.AsistenciaRegistradaEvent;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class KafkaProducerService {
+
+    private static final String TOPIC_ASISTENCIA_REGISTRADA = "asistencia-registrada";
 
     private final KafkaTemplate<String, AsistenciaRegistradaEvent> kafkaTemplate;
 
-    public KafkaProducerService(KafkaTemplate<String, AsistenciaRegistradaEvent> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
-
     public void enviarAsistenciaRegistrada(AsistenciaRegistradaEvent event) {
-        kafkaTemplate.send("asistencia-registrada", event);
+        kafkaTemplate.send(TOPIC_ASISTENCIA_REGISTRADA, event);
     }
 }
