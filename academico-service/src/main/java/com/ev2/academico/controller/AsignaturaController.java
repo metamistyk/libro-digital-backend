@@ -16,6 +16,8 @@ import com.ev2.academico.dto.AsignaturaRequestDTO;
 import com.ev2.academico.dto.AsignaturaResponseDTO;
 import com.ev2.academico.service.AsignaturaService;
 
+import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,35 +28,49 @@ public class AsignaturaController {
     private final AsignaturaService asignaturaService;
 
     @PostMapping
-    public AsignaturaResponseDTO guardar(@RequestBody AsignaturaRequestDTO asignaturaRequestDTO) {
-        return asignaturaService.guardar(asignaturaRequestDTO);
+    public AsignaturaResponseDTO guardar(
+            @Valid @RequestBody
+            AsignaturaRequestDTO asignaturaRequestDTO) {
+
+        return asignaturaService.guardar(
+                asignaturaRequestDTO);
     }
 
     @GetMapping
     public List<AsignaturaResponseDTO> listarTodas() {
+
         return asignaturaService.listarTodas();
     }
 
     @GetMapping("/{id}")
-    public AsignaturaResponseDTO buscarPorId(@PathVariable Long id) {
+    public AsignaturaResponseDTO buscarPorId(
+            @PathVariable Long id) {
+
         return asignaturaService.buscarPorId(id);
     }
 
     @GetMapping("/por-curso")
-    public List<AsignaturaResponseDTO> listarPorCurso(@RequestParam Long cursoId) {
+    public List<AsignaturaResponseDTO> listarPorCurso(
+            @RequestParam Long cursoId) {
+
         return asignaturaService.listarPorCurso(cursoId);
     }
 
     @PutMapping("/{id}")
     public AsignaturaResponseDTO actualizar(
             @PathVariable Long id,
-            @RequestBody AsignaturaRequestDTO asignaturaRequestDTO) {
+            @Valid @RequestBody
+            AsignaturaRequestDTO asignaturaRequestDTO) {
 
-        return asignaturaService.actualizar(id, asignaturaRequestDTO);
+        return asignaturaService.actualizar(
+                id,
+                asignaturaRequestDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
+    public void eliminar(
+            @PathVariable Long id) {
+
         asignaturaService.eliminar(id);
     }
 }

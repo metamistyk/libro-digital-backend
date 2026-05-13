@@ -5,40 +5,40 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ev2.asistencia.dto.AsistenciaRequestDTO;
-import com.ev2.asistencia.dto.AsistenciaResponseDTO;
-import com.ev2.asistencia.service.AsistenciaService;
+import com.ev2.asistencia.dto.NotaRequestDTO;
+import com.ev2.asistencia.dto.NotaResponseDTO;
+import com.ev2.asistencia.service.NotaService;
 
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/asistencias")
+@RequestMapping("/api/v1/notas")
 @RequiredArgsConstructor
-public class AsistenciaController {
+public class NotaController {
 
-    private final AsistenciaService asistenciaService;
+    private final NotaService notaService;
 
     @PostMapping
-    public AsistenciaResponseDTO guardar(
+    public NotaResponseDTO guardar(
             @Valid @RequestBody
-            AsistenciaRequestDTO asistenciaRequestDTO) {
+            NotaRequestDTO notaRequestDTO) {
 
-        return asistenciaService.guardar(
-                asistenciaRequestDTO);
+        return notaService.guardar(
+                notaRequestDTO);
     }
 
     @GetMapping
-    public List<AsistenciaResponseDTO>
+    public List<NotaResponseDTO>
             listarPorEstudiante(
                     @RequestParam Long estudianteId) {
 
-        return asistenciaService
+        return notaService
                 .listarPorEstudiante(estudianteId);
     }
 }

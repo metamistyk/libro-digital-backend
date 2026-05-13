@@ -16,6 +16,8 @@ import com.ev2.academico.dto.AsignacionDocenteRequestDTO;
 import com.ev2.academico.dto.AsignacionDocenteResponseDTO;
 import com.ev2.academico.service.AsignacionDocenteService;
 
+import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -27,41 +29,55 @@ public class AsignacionDocenteController {
 
     @PostMapping
     public AsignacionDocenteResponseDTO guardar(
-            @RequestBody AsignacionDocenteRequestDTO asignacionDocenteRequestDTO) {
+            @Valid @RequestBody
+            AsignacionDocenteRequestDTO asignacionDocenteRequestDTO) {
 
-        return asignacionDocenteService.guardar(asignacionDocenteRequestDTO);
+        return asignacionDocenteService.guardar(
+                asignacionDocenteRequestDTO);
     }
 
     @GetMapping
     public List<AsignacionDocenteResponseDTO> listarTodas() {
+
         return asignacionDocenteService.listarTodas();
     }
 
     @GetMapping("/{id}")
-    public AsignacionDocenteResponseDTO buscarPorId(@PathVariable Long id) {
+    public AsignacionDocenteResponseDTO buscarPorId(
+            @PathVariable Long id) {
+
         return asignacionDocenteService.buscarPorId(id);
     }
 
     @GetMapping("/por-docente")
-    public List<AsignacionDocenteResponseDTO> listarPorDocente(@RequestParam Long docenteId) {
+    public List<AsignacionDocenteResponseDTO> listarPorDocente(
+            @RequestParam Long docenteId) {
+
         return asignacionDocenteService.listarPorDocente(docenteId);
     }
 
     @GetMapping("/por-curso")
-    public List<AsignacionDocenteResponseDTO> listarPorCurso(@RequestParam Long cursoId) {
+    public List<AsignacionDocenteResponseDTO> listarPorCurso(
+            @RequestParam Long cursoId) {
+
         return asignacionDocenteService.listarPorCurso(cursoId);
     }
 
     @PutMapping("/{id}")
     public AsignacionDocenteResponseDTO actualizar(
             @PathVariable Long id,
-            @RequestBody AsignacionDocenteRequestDTO asignacionDocenteRequestDTO) {
+            @Valid @RequestBody
+            AsignacionDocenteRequestDTO asignacionDocenteRequestDTO) {
 
-        return asignacionDocenteService.actualizar(id, asignacionDocenteRequestDTO);
+        return asignacionDocenteService.actualizar(
+                id,
+                asignacionDocenteRequestDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
+    public void eliminar(
+            @PathVariable Long id) {
+
         asignacionDocenteService.eliminar(id);
     }
 }

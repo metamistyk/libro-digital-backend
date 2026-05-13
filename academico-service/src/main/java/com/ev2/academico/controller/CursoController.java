@@ -15,6 +15,8 @@ import com.ev2.academico.dto.CursoRequestDTO;
 import com.ev2.academico.dto.CursoResponseDTO;
 import com.ev2.academico.service.CursoService;
 
+import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,30 +27,41 @@ public class CursoController {
     private final CursoService cursoService;
 
     @PostMapping
-    public CursoResponseDTO guardar(@RequestBody CursoRequestDTO cursoRequestDTO) {
+    public CursoResponseDTO guardar(
+            @Valid @RequestBody
+            CursoRequestDTO cursoRequestDTO) {
+
         return cursoService.guardar(cursoRequestDTO);
     }
 
     @GetMapping
     public List<CursoResponseDTO> listarTodos() {
+
         return cursoService.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public CursoResponseDTO buscarPorId(@PathVariable Long id) {
+    public CursoResponseDTO buscarPorId(
+            @PathVariable Long id) {
+
         return cursoService.buscarPorId(id);
     }
 
     @PutMapping("/{id}")
     public CursoResponseDTO actualizar(
             @PathVariable Long id,
-            @RequestBody CursoRequestDTO cursoRequestDTO) {
+            @Valid @RequestBody
+            CursoRequestDTO cursoRequestDTO) {
 
-        return cursoService.actualizar(id, cursoRequestDTO);
+        return cursoService.actualizar(
+                id,
+                cursoRequestDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
+    public void eliminar(
+            @PathVariable Long id) {
+
         cursoService.eliminar(id);
     }
 }

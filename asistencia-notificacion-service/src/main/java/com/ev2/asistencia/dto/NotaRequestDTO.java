@@ -1,8 +1,7 @@
 package com.ev2.asistencia.dto;
 
-import com.ev2.asistencia.model.TipoAnotacion;
-
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -12,14 +11,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class AnotacionRequestDTO {
+public class NotaRequestDTO {
 
     @NotNull
     private Long estudianteId;
 
-    @NotBlank
-    private String descripcion;
+    @NotNull
+    private Long asignaturaId;
 
     @NotNull
-    private TipoAnotacion tipo;
+    @Min(1)
+    @Max(7)
+    private Double nota;
+
+    private String descripcion;
 }
