@@ -1,5 +1,7 @@
 package com.ev2.usuarios.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.ev2.usuarios.dto.RolRequestDTO;
@@ -25,6 +27,15 @@ public class RolServiceImpl implements RolService {
         Rol rolGuardado = rolRepository.save(rol);
 
         return convertirADTO(rolGuardado);
+    }
+
+    @Override
+    public List<RolResponseDTO> listarTodos() {
+
+        return rolRepository.findAll()
+                .stream()
+                .map(this::convertirADTO)
+                .toList();
     }
 
     private RolResponseDTO convertirADTO(Rol rol) {

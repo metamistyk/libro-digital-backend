@@ -1,5 +1,8 @@
 package com.ev2.usuarios.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +24,10 @@ public class UsuarioController {
     @PostMapping
     public UsuarioResponseDTO guardar(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
         return usuarioService.guardar(usuarioRequestDTO);
+    }
+
+    @GetMapping
+    public List<UsuarioResponseDTO> listarTodos() {
+        return usuarioService.listarTodos();
     }
 }

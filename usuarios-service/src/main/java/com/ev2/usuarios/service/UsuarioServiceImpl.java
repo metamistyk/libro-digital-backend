@@ -1,5 +1,7 @@
 package com.ev2.usuarios.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.ev2.usuarios.dto.UsuarioRequestDTO;
@@ -36,6 +38,15 @@ public class UsuarioServiceImpl implements UsuarioService {
         return convertirADTO(usuarioGuardado);
     }
 
+    @Override
+    public List<UsuarioResponseDTO> listarTodos() {
+
+        return usuarioRepository.findAll()
+                .stream()
+                .map(this::convertirADTO)
+                .toList();
+    }
+
     private UsuarioResponseDTO convertirADTO(Usuario usuario) {
 
         UsuarioResponseDTO dto = new UsuarioResponseDTO();
@@ -45,8 +56,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         dto.setApellido(usuario.getApellido());
         dto.setEmail(usuario.getEmail());
 
-        dto.setRolId(usuario.getRol().getId());
-        dto.setNombreRol(usuario.getRol().getNombre());
+        if (usuario.getRol() != null) {
+            dto.setRolId(usuario.getRol().getId());
+            dto.setNombreRol(usuario.getRol().getNombre());
+        }
 
         return dto;
     }
