@@ -22,15 +22,12 @@ public class EstudianteController {
     private final EstudianteService estudianteService;
 
     @PostMapping
-    public EstudianteResponseDTO guardar(
-            @RequestBody EstudianteRequestDTO estudianteRequestDTO) {
-
+    public EstudianteResponseDTO guardar(@RequestBody EstudianteRequestDTO estudianteRequestDTO) {
         return estudianteService.guardar(estudianteRequestDTO);
     }
 
     @GetMapping
     public List<EstudianteResponseDTO> listarTodos() {
-
         return estudianteService.listarTodos();
     }
 }
