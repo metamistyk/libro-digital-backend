@@ -33,4 +33,9 @@ public class EstudianteController {
 
         return estudianteService.listarTodos();
     }
+    
+    @GetMapping("/{id}")
+    public EstudianteResponseDTO buscarPorId(@PathVariable Long id) {
+        return estudianteService.buscarPorId(id);
+    }
 }

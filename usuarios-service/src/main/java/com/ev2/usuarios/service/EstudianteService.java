@@ -10,4 +10,6 @@ public interface EstudianteService {
     EstudianteResponseDTO guardar(EstudianteRequestDTO estudianteRequestDTO);
 
     List<EstudianteResponseDTO> listarTodos();
+    
+    EstudianteResponseDTO buscarPorId(Long id);
 }

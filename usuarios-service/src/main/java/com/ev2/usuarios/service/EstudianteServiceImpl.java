@@ -53,4 +53,11 @@ public class EstudianteServiceImpl implements EstudianteService {
 
         return dto;
     }
+    
+    @Override
+    public EstudianteResponseDTO buscarPorId(Long id) {
+        Estudiante estudiante = estudianteRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Estudiante no encontrado: " + id));
+        return convertirADTO(estudiante);
+    }
 }

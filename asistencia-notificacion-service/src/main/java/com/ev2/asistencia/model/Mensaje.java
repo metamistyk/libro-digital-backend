@@ -2,34 +2,33 @@ package com.ev2.asistencia.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity; 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "notas")
+@Table(name = "mensajes")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Nota {
+public class Mensaje {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long estudianteId;
+    private Long remitenteId;
 
-    private Long asignaturaId;
+    private Long destinatarioId;
 
-    private Double nota;
+    private String contenido;
 
-    private String descripcion;
+    private LocalDateTime fechaEnvio;
 
-    private LocalDateTime fechaRegistro;
+    private Boolean leido;
 }
