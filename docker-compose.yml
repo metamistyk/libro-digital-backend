@@ -74,13 +74,10 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-
-      # Listener interno para contenedores y externo para aplicaciones locales
       KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   # Interfaz visual para revisar topics, mensajes y consumidores de Kafka
@@ -94,13 +91,23 @@ services:
     environment:
       KAFKA_BROKERCONNECT: kafka:29092
 
+  # SonarQube para análisis de calidad de código
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    ports:
+      - "9001:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+
 volumes:
-
-  # Persistencia PostgreSQL academico-service
   postgres_academico_data:
-
-  # Persistencia PostgreSQL usuarios-service
   postgres_usuarios_data:
-
-  # Persistencia PostgreSQL asistencia-notificacion-service
   postgres_asistencia_data:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_extensions:
