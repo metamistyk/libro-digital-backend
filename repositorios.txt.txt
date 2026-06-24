@@ -1,0 +1,43 @@
+REPOSITORIOS — SISTEMA LIBRO DIGITAL
+DSY1106 Desarrollo Fullstack III
+Instituto Profesional Duoc UC — 2025
+
+========================================================
+
+1. REPOSITORIO BACKEND (rama: feature/integracion-final)
+   URL: https://github.com/metamistyk/libro-digital-backend.git
+   Descripción: Contiene los tres microservicios Spring Boot del sistema:
+   - academico-service (puerto 8081): gestión de cursos, asignaturas,
+     periodos lectivos y asignaciones de docentes.
+   - usuarios-service (puerto 8082): gestión de usuarios, estudiantes y roles.
+   - asistencia-notificacion-service (puerto 8083): registro de asistencias,
+     notas, anotaciones, mensajes y notificaciones automáticas via Kafka.
+   Incluye: docker-compose.yml con toda la infraestructura (PostgreSQL x3,
+   Kafka, Zookeeper, Kafdrop, PgAdmin) y pruebas unitarias con JUnit 5
+   y Mockito (32 tests, 0 fallos).
+
+========================================================
+
+2. REPOSITORIO BFF SERVICE (rama: main)
+   URL: https://github.com/metamistyk/libro-digital-bff.git
+   Descripción: Backend for Frontend desarrollado en Spring Boot (puerto 8080).
+   Actúa como punto de entrada único para el frontend React. Agrega datos
+   de los tres microservicios internos, calcula porcentaje de asistencia,
+   promedio de notas y ranking de estudiantes. Todos los endpoints requieren
+   autenticación JWT via Auth0.
+
+========================================================
+
+3. REPOSITORIO FRONTEND (rama: main)
+   URL: https://github.com/metamistyk/libro-digital-frontend.git
+   Descripción: Aplicación web desarrollada en React 18 + Vite. Implementa
+   tres portales diferenciados por rol (admin, docente, estudiante) con
+   autenticación via Auth0. Funcionalidades principales:
+   - Portal Admin: gestión de usuarios, estudiantes, cursos, asignaturas,
+     periodos y asignaciones de docentes.
+   - Portal Docente: registro de asistencia por lista, notas y anotaciones,
+     mensajería, ranking de estudiantes.
+   - Portal Estudiante: consulta de asistencias, notas, anotaciones,
+     notificaciones Kafka y mensajería.
+
+========================================================
